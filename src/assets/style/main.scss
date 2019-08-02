@@ -1,0 +1,48 @@
+//change variables here
+$tablet: 768px;
+@import '~bulma/bulma';
+@import url('https://fonts.googleapis.com/css?family=Domine|Roboto&display=swap');
+
+body, button, input, select, textarea {
+  font-family: 'Roboto', sans-serif;
+}
+
+p {
+  color: #363636;
+}
+
+.post {
+  max-width: 960px;
+  margin: 0 auto 40px;
+  text-align: left;
+  cursor: pointer;
+
+  .title {
+    font-family: 'Domine', serif;
+    margin-bottom: 12px;
+
+    &::first-letter {
+      font-size: 200%;
+      color: $orange;
+    }
+  }
+
+  .media-left {
+    width: 25%;
+  }
+
+  button {
+    margin-top: 10px;
+    text-align: right;
+  }
+
+  .resume {
+    line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+  }
+
+  .image img {
+    border-radius: 4px;
+  }
+}
