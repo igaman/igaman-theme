@@ -1,47 +1,49 @@
 <template>
-  <div class="container">
-    <div>{{ showModal }}</div>
-    <article @click="activeModal(post)"
-      class="post columns is-mobile is-vcentered"
-      v-for="post in displayedPosts"
-      :key="post.id"
-      :data-id="post.id"
-    >
-      <div class="column is-one-third-mobile is-one-quarter-tablet is-one-fifth-desktop">
-        <p class="image">
-          <img src="https://via.placeholder.com/400">
-        </p>
-      </div>
-      <div class="column is-two-thirds-mobile is-three-quarters-tablet is-four-fifths-desktop">
-        <h2 class="title is-4 is-size-6-mobile">{{ post.title.rendered }}</h2>
-        <div class="resume is-hidden-mobile" v-html="post.excerpt.rendered">
-        </div>
-        <button class="button is-primary is-hidden-mobile" @click="showModal = true">
-          Lire la suite
-        </button>
-      </div>
-    </article>
-    <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
-      <ul class="pagination-list">
-        <li><a class="pagination-previous" v-if="page != 1" @click="page--"><</a></li>
-        <li v-if="page != 1" @click="page = 1">
-          <a class="pagination-link"
-            :class="{ 'is-current' : page == pageNumber}">{{1}}</a>
-        </li>
-        <li v-for="pageNumber in pages.slice(page-1, page+2)" @click="page = pageNumber">
-          <a class="pagination-link"
-            :class="{ 'is-current' : page == pageNumber}">{{pageNumber}}</a>
-        </li>
-        <li v-if="page < pages.length - 2" @click="page = pages.length">
-          <a class="pagination-link"
-            :class="{ 'is-current' : page == pageNumber}">{{pages.length}}</a>
-        </li>
-        <li><a class="pagination-next" @click="page++" v-if="page < pages.length">></a></li>
-      </ul>
-    </nav>
-    <app-modal @closeModal="closeModal"
+<div>
+  <app-modal @closeModal="closeModal"
     :showModal="showModal"
     :contentArticle="contentArticle"></app-modal>
+    <div class="container">
+      <div>{{ showModal }}</div>
+      <article @click="activeModal(post)"
+        class="post columns is-mobile is-vcentered"
+        v-for="post in displayedPosts"
+        :key="post.id"
+        :data-id="post.id"
+      >
+        <div class="column is-one-third-mobile is-one-quarter-tablet is-one-fifth-desktop">
+          <p class="image">
+            <img src="https://via.placeholder.com/400">
+          </p>
+        </div>
+        <div class="column is-two-thirds-mobile is-three-quarters-tablet is-four-fifths-desktop">
+          <h2 class="title is-4 is-size-6-mobile">{{ post.title.rendered }}</h2>
+          <div class="resume is-hidden-mobile" v-html="post.excerpt.rendered">
+          </div>
+          <button class="button is-primary is-hidden-mobile" @click="showModal = true">
+            Lire la suite
+          </button>
+        </div>
+      </article>
+      <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
+        <ul class="pagination-list">
+          <li><a class="pagination-previous" v-if="page != 1" @click="page--"><</a></li>
+          <li v-if="page != 1" @click="page = 1">
+            <a class="pagination-link"
+              :class="{ 'is-current' : page == pageNumber}">{{1}}</a>
+          </li>
+          <li v-for="pageNumber in pages.slice(page-1, page+2)" @click="page = pageNumber">
+            <a class="pagination-link"
+              :class="{ 'is-current' : page == pageNumber}">{{pageNumber}}</a>
+          </li>
+          <li v-if="page < pages.length - 2" @click="page = pages.length">
+            <a class="pagination-link"
+              :class="{ 'is-current' : page == pageNumber}">{{pages.length}}</a>
+          </li>
+          <li><a class="pagination-next" @click="page++" v-if="page < pages.length">></a></li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </template>
 
@@ -72,13 +74,16 @@ export default {
         title: post.title.rendered,
         content: post.content.rendered,
       };
+      document.body.style.overflow = 'hidden';
     },
     closeModal(arg) {
       this.showModal = arg;
+      document.body.style.overflow = '';
     },
     getPosts() {
       axios.get(this.baseUrl+'posts'+'?per_page=100')
         .then(response => {
+          console.log('good')
           console.table(response.data)
           this.posts = response.data;
         })

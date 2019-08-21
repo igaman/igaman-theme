@@ -1,7 +1,7 @@
 <template>
-    <div name="modal" v-if="showModal">
+    <div name="modal" class="modal-mask" v-if="showModal">
       <span>{{ showModal }}</span>
-      <div class="modal-mask">
+      <div>
         <div class="modal-wrapper">
           <div class="modal-container">
 
@@ -30,19 +30,15 @@ export default {
 <style lang="scss">
   .modal-mask {
     position: fixed;
+    overflow: auto;
     z-index: 9998;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, .5);
-    display: table;
+    display: block;
     transition: opacity .3s ease;
-  }
-
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
   }
 
   .modal-container {
