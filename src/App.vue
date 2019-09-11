@@ -4,7 +4,8 @@
     <br>
     <app-nav></app-nav>
     <br>
-    <app-post></app-post>
+    <!-- <app-post></app-post> -->
+    <router-view/>
   </div>
 </template>
 
