@@ -1,29 +1,29 @@
 <template>
-<keep-alive>
+<div>
+  <app-modal @closeModal="closeModal"
+    :showModal="showModal"
+    :contentArticle="contentArticle"></app-modal>
     <div class="container">
-      <article
+      <div>{{ showModal }}</div>
+      <article @click="activeModal(post)"
+        class="post columns is-mobile is-vcentered"
         v-for="post in displayedPosts"
         :key="post.id"
         :data-id="post.id"
-        class="post"
-        >
-        <router-link tag="div"
-        :to="{ name: 'post', params: { id: post.id }}"
-        class="columns is-mobile is-vcentered">
-          <div class="column is-one-third-mobile is-one-quarter-tablet is-one-fifth-desktop">
-            <p class="image">
-              <img src="https://via.placeholder.com/400">
-            </p>
+      >
+        <div class="column is-one-third-mobile is-one-quarter-tablet is-one-fifth-desktop">
+          <p class="image">
+            <img src="https://via.placeholder.com/400">
+          </p>
+        </div>
+        <div class="column is-two-thirds-mobile is-three-quarters-tablet is-four-fifths-desktop">
+          <h2 class="title is-4 is-size-6-mobile">{{ post.title.rendered }}</h2>
+          <div class="resume is-hidden-mobile" v-html="post.excerpt.rendered">
           </div>
-          <div class="column is-two-thirds-mobile is-three-quarters-tablet is-four-fifths-desktop">
-            <h2 class="title is-4 is-size-6-mobile">{{ post.title.rendered }}</h2>
-            <div class="resume is-hidden-mobile" v-html="post.excerpt.rendered">
-            </div>
-            <button class="button is-primary is-hidden-mobile">
-              Lire la suite
-            </button>
-          </div>
-        </router-link>
+          <button class="button is-primary is-hidden-mobile" @click="showModal = true">
+            Lire la suite
+          </button>
+        </div>
       </article>
       <nav class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
         <ul class="pagination-list">
@@ -44,14 +44,16 @@
         </ul>
       </nav>
     </div>
-  </keep-alive>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
+import modal from './Modal.vue';
 
 export default {
   components: {
+    appModal: modal,
   },
   data() {
     return {
@@ -62,9 +64,22 @@ export default {
         pages: [],
         pageNumber: null,
         contentArticle: null,
+        showModal: false,
     }
   },
   methods: {
+    activeModal(post) {
+      this.showModal = true;
+      this.contentArticle =  {
+        title: post.title.rendered,
+        content: post.content.rendered,
+      };
+      document.body.style.overflow = 'hidden';
+    },
+    closeModal(arg) {
+      this.showModal = arg;
+      document.body.style.overflow = '';
+    },
     getPosts() {
       axios.get(this.baseUrl+'posts'+'?per_page=100')
         .then(response => {
@@ -106,3 +121,4 @@ export default {
   },
 }
 </script>
+

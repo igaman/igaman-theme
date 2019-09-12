@@ -11,11 +11,13 @@ const router = new Router({
       path: '/',
       name: 'home',
       component: Home,
+      props: true,
     },
     {
       path: '/post/:id',
       name: 'post',
       component: () => import('./components/Post.vue'),
+      props: true,
     },
     {
       path: '*',
